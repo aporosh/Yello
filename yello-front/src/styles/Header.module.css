@@ -1,0 +1,25 @@
+.header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    height: 50px;
+  
+    color: #97ff29;
+
+    background-image: linear-gradient(209deg, rgba(6, 56, 82, 1) 15%, rgba(9, 42, 59, 1) 72%);
+    border-color: transparent;
+    border-style: solid;
+  }
+  .header_lk {
+    margin: 5px;
+    text-decoration: none;
+    color: #97ff29;
+    font-size: 18px;
+  }
+  .header_title {
+    font-size: 30px;
+    font-weight: 700;
+
+  }
