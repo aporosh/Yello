@@ -1,0 +1,35 @@
+.home{
+    background-color: #011a27;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.home_title {
+    color: blueviolet;
+}
+.game {
+     display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+.game_item {
+   background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+  
+}
+.game_title {
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 24px;
+}
+.game_text {
+    margin-bottom: 14px;
+    font-size: 16px;
+    line-height: 1.85;
+    opacity: 0.8;
+}
