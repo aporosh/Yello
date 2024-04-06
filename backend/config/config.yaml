@@ -1,0 +1,4 @@
+db:
+  connection_string: postgres://yellopguser:yellopwd@localhost:25432/yellodb
+server:
+  port: ":4004"
