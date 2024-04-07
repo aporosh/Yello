@@ -29,9 +29,11 @@ func (s *APIServer) Run() {
 		json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 	})
 
+	router.HandleFunc("/challenge", s.handleNewChhalenge).Methods(http.MethodPost)
 	router.HandleFunc("/challenge/{chid}/trials/{trid}", s.handleFinishTrial).Methods(http.MethodPatch)
 	router.HandleFunc("/challenge/{chid}/trials", s.handleNewTrial).Methods(http.MethodPost)
 	router.HandleFunc("/challenge/{chid}/challengers", s.handleChallengers).Methods(http.MethodGet)
+	router.HandleFunc("/challenge/{chid}/challengers", s.handleNewChallenger).Methods(http.MethodPost)
 	router.HandleFunc("/challenge/{chid}", s.handleChallenge).Methods(http.MethodGet)
 
 	crs := cors.New(cors.Options{
@@ -44,6 +46,24 @@ func (s *APIServer) Run() {
 	log.Info().Str("Port", s.listenAddr).Msg("Server is running")
 
 	http.ListenAndServe(s.listenAddr, handler)
+}
+
+func (s *APIServer) handleNewChhalenge(w http.ResponseWriter, r *http.Request) {
+	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("new challenge")
+	var req_ch Challenge
+	if err := json.NewDecoder(r.Body).Decode(&req_ch); err != nil {
+		log.Error().Err(err).Msg("cannot parse request body")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	res, err := s.store.PostChallenge(&req_ch)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
 }
 
 func (s *APIServer) handleFinishTrial(w http.ResponseWriter, r *http.Request) {
@@ -99,6 +119,29 @@ func (s *APIServer) handleChallengers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(challengers)
+}
+
+func (s *APIServer) handleNewChallenger(w http.ResponseWriter, r *http.Request) {
+	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("new challenger posted")
+	chid, err := strconv.Atoi(mux.Vars(r)["chid"])
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	var req_chr Challenger
+	if err := json.NewDecoder(r.Body).Decode(&req_chr); err != nil {
+		log.Error().Err(err).Msg("cannot parse request body")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	res, err := s.store.PostChallenger(chid, &req_chr)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
 }
 
 func (s *APIServer) handleChallenge(w http.ResponseWriter, r *http.Request) {
