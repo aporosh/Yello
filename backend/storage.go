@@ -15,6 +15,7 @@ type Storage interface {
 	GetChallenge(int) (*Challenge, error)
 	PostChallenge(*Challenge) (*Challenge, error)
 	GetChallengersList(int) ([]*Challenger, error)
+	PostChallenger(int, *Challenger) (*Challenger, error)
 	PostNewTrial(int) (*Trial, error)
 	PatchTrialResult(int, string, string, string) error
 }
@@ -103,6 +104,16 @@ func (pgs *PostgresStorage) GetChallengersList(chid int) ([]*Challenger, error) 
 		return nil, err
 	}
 	return pgx.CollectRows(res, pgx.RowToAddrOfStructByName[Challenger])
+}
+
+func (pgs *PostgresStorage) PostChallenger(chid int, postChr *Challenger) (*Challenger, error) {
+	log.Info().Any("challenger", postChr).Msg("insert new challenger")
+	res, err := pgs.dbpool.Query(context.Background(), "INSERT INTO challengers (title, link, description, ref_challenge_id) VALUES ($1, $2, $3, $4) RETURNING id, title, link, description, rating, trials", postChr.Title, postChr.Link, postChr.Description, chid)
+	if err != nil {
+		log.Error().Err(err).Msg("querry failed")
+		return nil, err
+	}
+	return pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
 }
 
 func (pgs *PostgresStorage) PostNewTrial(chid int) (*Trial, error) {
