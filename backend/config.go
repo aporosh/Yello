@@ -12,7 +12,7 @@ type Config struct {
 		ConnString string `yaml:"connection_string" env:"YELLO_DB_CONN_STRING" env-required:"true"`
 	} `yaml:"db"`
 	Server struct {
-		Port string `yaml:"port" env:"YELLO_SERVER_PORT" env-default:":4004"`
+		Port string `yaml:"port" env:"YELLO_SERVER_PORT" env-default:":4003"`
 	} `yaml:"server"`
 }
 
