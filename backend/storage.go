@@ -106,23 +106,30 @@ func (pgs *PostgresStorage) PostNewTrial(chid int) (*Trial, error) {
 		log.Info().Msg("Not enough challengers")
 		return nil, errors.New("not enough challengers")
 	}
-	ch1_pos := rand.IntN(cnt)
-	ch2_pos := rand.IntN(cnt - 1)
-	if ch2_pos >= ch1_pos {
-		ch2_pos += 1
+
+	var chat_pool int = 10
+	if cnt > 100 {
+		chat_pool = cnt / 10
 	}
-	res, err := pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials FROM challengers WHERE ref_challenge_id = $1 LIMIT 1 OFFSET $2", chid, ch1_pos)
+	if cnt < 11 {
+		chat_pool = cnt - 1
+	}
+
+	res, err := pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials FROM challengers WHERE ref_challenge_id = $1 ORDER BY trials ASC, rating DESC LIMIT 1", chid)
 	if err != nil {
-		log.Error().Err(err).Msg("Querry failed")
+		log.Error().Err(err).Msg("querry failed")
 		return nil, err
 	}
 	ch1, _ := pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
-	res, err = pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials FROM challengers WHERE ref_challenge_id = $1 LIMIT 1 OFFSET $2", chid, ch2_pos)
+
+	ch2_pos := rand.IntN(chat_pool)
+	res, err = pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials FROM challengers WHERE ref_challenge_id = $1 AND id != $2 ORDER BY abs(rating - $3) ASC, trials DESC OFFSET $4 LIMIT 1", chid, ch1.ID, ch1.Rating, ch2_pos)
 	if err != nil {
 		log.Error().Err(err).Msg("Querry failed")
 		return nil, err
 	}
 	ch2, _ := pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
+
 	var trID string
 	err = pgs.dbpool.QueryRow(context.Background(), "insert into trials(ref_challenger1, ref_challenger2, ref_challenge_id) values ($1, $2, $3) returning id", ch1.ID, ch2.ID, chid).Scan(&trID)
 	if err != nil {
