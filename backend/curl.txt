@@ -2,3 +2,4 @@ curl 'http://localhost:4000/challenge/1'
 curl 'http://localhost:4000/challenge/1/challengers'
 curl -X POST http://localhost:4000/challenge/1/trials
 curl -d '{"winner":"123qwe12234", "loser":"234324fdfgf"}' -H "Content-Type: application/json" -X PATCH http://localhost:4000/challenge/1/trials/12
+curl -d '{"title":"the title", "description":"the description"}' -H "Content-Type: application/json" -X POST http://localhost:4000/challenge
