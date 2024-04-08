@@ -130,21 +130,26 @@ func (pgs *PostgresStorage) PostNewTrial(chid int) (*Trial, error) {
 		return nil, errors.New("not enough challengers")
 	}
 
-	var chat_pool int = 10
-	if cnt > 100 {
-		chat_pool = cnt / 10
+	var chat_pool int = 5
+	if cnt < 5 {
+		chat_pool = cnt
 	}
-	if cnt < 11 {
-		chat_pool = cnt - 1
-	}
+	ch1_pos := rand.IntN(chat_pool)
 
-	res, err := pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials FROM challengers WHERE ref_challenge_id = $1 ORDER BY trials ASC, rating DESC LIMIT 1", chid)
+	res, err := pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials FROM challengers WHERE ref_challenge_id = $1 ORDER BY trials ASC, rating DESC OFFSET $2 LIMIT 1", chid, ch1_pos)
 	if err != nil {
 		log.Error().Err(err).Msg("querry failed")
 		return nil, err
 	}
 	ch1, _ := pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
 
+	chat_pool = 10
+	if cnt > 100 {
+		chat_pool = cnt / 10
+	}
+	if cnt < 11 {
+		chat_pool = cnt - 1
+	}
 	ch2_pos := rand.IntN(chat_pool)
 	res, err = pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials FROM challengers WHERE ref_challenge_id = $1 AND id != $2 ORDER BY abs(rating - $3) ASC, trials DESC OFFSET $4 LIMIT 1", chid, ch1.ID, ch1.Rating, ch2_pos)
 	if err != nil {
