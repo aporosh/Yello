@@ -1,35 +1,132 @@
-.home{
+.home_page {
     background-color: #011a27;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    height: calc(100vh - 140px);
 }
-.home_title {
-    color: blueviolet;
+
+a {
+    text-decoration: none;
 }
+.container {
+    margin: 20px;
+}
+.market {
+    display: flex;
+}
+
+.market_title {
+    font-weight: 700;
+
+    color: var(--bg);
+
+    color: #97ff29;
+    font-size: 120px;
+    font-family: 'Raleway', Arial, sans-serif;
+    line-height: 1;
+
+    margin: 0 20px;
+}
+
+.market_text {
+    font-weight: 500;
+    font-size: 35px;
+    line-height: 51px;
+
+    color: var(--light);
+    color: #fff;
+    max-width: 500px;
+    margin: 10px 0 24px 0;
+}
+
+
 .game {
-     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+    margin-bottom: 30px;
 }
+
 .game_item {
+    /*
    background-color: #fff;
     display: flex;
     flex-direction: column;
-    max-width: 350px;
+    max-width: 400px;
     justify-content: center;
     align-items: center;
     margin: 10px;
-  
+    padding: 10px;
+  border-radius: 10px;
+*/
+    max-width: 540px;
+    border-radius: 20px;
+    background-image: linear-gradient(152deg, rgba(130, 227, 32, 1) 16%, rgba(191, 255, 127, 1) 84%);
+    border-color: #39474f;
+    border-style: solid;
+    transform-origin: center center;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 7px;
 }
+
 .game_title {
+    /*
     margin-bottom: 20px;
     font-weight: 700;
     font-size: 24px;
+*/
+    color: #063852;
+    font-size: 30px;
+    font-family: 'Raleway', Arial, sans-serif;
+    line-height: 1;
+    font-weight: 700;
+    background-position: center center;
+    border-color: transparent;
+    border-style: solid;
+    
 }
+
 .game_text {
+    /*
     margin-bottom: 14px;
     font-size: 16px;
     line-height: 1.85;
     opacity: 0.8;
+
+*/
+    color: #063852;
+    font-size: 20px;
+    font-family: 'Raleway', Arial, sans-serif;
+    line-height: 1.55;
+    font-weight: 500;
+    background-position: center center;
+    border-color: transparent;
+    border-style: solid;
+
+    transform-origin: center center;
+    line-height: 31px;
+
+    top: 122px;
+    left: 120px;
+    max-width: 366px;
+    zoom: 1.266;
+}
+
+.poster_button {
+    height: 40px;
+    width: 200px;
+    color: #ffffff;
+    font-size: 18px;
+    font-family: 'Raleway', Arial, sans-serif;
+    line-height: 1.55;
+    font-weight: 600;
+    border-radius: 30px;
+    background-color: #7f29ff;
+    background-position: center center;
+    border-color: transparent;
+    border-style: solid;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    cursor: pointer;
+    margin: 10px;
 }

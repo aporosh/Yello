@@ -1,5 +1,13 @@
 version: "3.9"
 services:
+  yelloclient:
+    container_name: yello-front
+    build:
+      dockerfile: yello-front/Dockerfile
+    hostname: localhost
+    ports:
+      - "3000:3000"
+
   yelloback:
     container_name: yello-backend
     image: yello-backend:local
