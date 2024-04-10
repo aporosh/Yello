@@ -64,6 +64,7 @@ func (s *APIServer) handleNewChhalenge(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 }
@@ -71,6 +72,7 @@ func (s *APIServer) handleNewChhalenge(w http.ResponseWriter, r *http.Request) {
 func (s *APIServer) handleFinishTrialOpt(w http.ResponseWriter, r *http.Request) {
 	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("Trial finished - options")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -93,6 +95,7 @@ func (s *APIServer) handleFinishTrial(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -110,6 +113,7 @@ func (s *APIServer) handleNewTrial(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(trial)
 }
@@ -128,6 +132,7 @@ func (s *APIServer) handleChallengers(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(challengers)
 }
@@ -152,6 +157,7 @@ func (s *APIServer) handleNewChallenger(w http.ResponseWriter, r *http.Request) 
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 }
@@ -170,6 +176,7 @@ func (s *APIServer) handleChallenge(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(challenge)
 }
