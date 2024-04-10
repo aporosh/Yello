@@ -30,7 +30,7 @@ func (s *APIServer) Run() {
 	})
 
 	router.HandleFunc("/challenge", s.handleNewChhalenge).Methods(http.MethodPost)
-	router.HandleFunc("/challenge/{chid}/trials/{trid}", s.handleFinishTrial).Methods(http.MethodPatch)
+	router.HandleFunc("/challenge/{chid}/trials/{trid}", s.handleFinishTrial)
 	router.HandleFunc("/challenge/{chid}/trials", s.handleNewTrial).Methods(http.MethodPost)
 	router.HandleFunc("/challenge/{chid}/challengers", s.handleChallengers).Methods(http.MethodGet)
 	router.HandleFunc("/challenge/{chid}/challengers", s.handleNewChallenger).Methods(http.MethodPost)
