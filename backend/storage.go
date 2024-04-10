@@ -238,7 +238,7 @@ func (pgs *PostgresStorage) PatchTrialResult(chid int, trid, win, los string) er
 		log.Error().Err(err).Msg("Failed to save winner")
 		return err
 	}
-	if _, err = tx.Exec(ctx, "update challengers set rating = $1, trials = $2 where id=$3", loser.Rating+final_delta, loser.Trials+1, los); err != nil {
+	if _, err = tx.Exec(ctx, "update challengers set rating = $1, trials = $2 where id=$3", loser.Rating-final_delta, loser.Trials+1, los); err != nil {
 		log.Error().Err(err).Msg("Failed to save loser")
 		return err
 	}
