@@ -1,0 +1,4 @@
+export const BASE_URL = 'http://158.160.42.61:4004/challenge/1';
+
+//export const BASE_URL = 'http://localhost:4004/challenge/1';
+

@@ -1,19 +1,17 @@
 //import './App.css';
 import React from "react";
 import Header from "../Header/Header";
-import HomePage from "../../pages/HomePage/HomePage";
-import { Route, Routes } from "react-router-dom";
-import ResultPage from "../../pages/ResultPage/ResultPage";
+import AppRoutes from "../Routes/Routes";
 import styles from "../../styles/App.module.css";
+import Footer from "../Footer/Footer";
+
 
 function App() {
   return (
     <>
-     <Header />
-     <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/results' element={<ResultPage/>} />
-      </Routes>
+      <Header />
+      <AppRoutes />
+      <Footer />
     </>
   );
 }
