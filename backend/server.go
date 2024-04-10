@@ -30,7 +30,8 @@ func (s *APIServer) Run() {
 	})
 
 	router.HandleFunc("/challenge", s.handleNewChhalenge).Methods(http.MethodPost)
-	router.HandleFunc("/challenge/{chid}/trials/{trid}", s.handleFinishTrial)
+	router.HandleFunc("/challenge/{chid}/trials/{trid}", s.handleFinishTrialOpt).Methods(http.MethodOptions)
+	router.HandleFunc("/challenge/{chid}/trials/{trid}", s.handleFinishTrial).Methods(http.MethodPatch)
 	router.HandleFunc("/challenge/{chid}/trials", s.handleNewTrial).Methods(http.MethodPost)
 	router.HandleFunc("/challenge/{chid}/challengers", s.handleChallengers).Methods(http.MethodGet)
 	router.HandleFunc("/challenge/{chid}/challengers", s.handleNewChallenger).Methods(http.MethodPost)
@@ -62,12 +63,19 @@ func (s *APIServer) handleNewChhalenge(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 }
 
+func (s *APIServer) handleFinishTrialOpt(w http.ResponseWriter, r *http.Request) {
+	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("Trial finished - options")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(http.StatusOK)
+}
+
 func (s *APIServer) handleFinishTrial(w http.ResponseWriter, r *http.Request) {
-	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("Trial finished")
+	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("Trial finished options")
 	chid, err := strconv.Atoi(mux.Vars(r)["chid"])
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -84,6 +92,7 @@ func (s *APIServer) handleFinishTrial(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -100,6 +109,7 @@ func (s *APIServer) handleNewTrial(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(trial)
 }
@@ -117,6 +127,7 @@ func (s *APIServer) handleChallengers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(challengers)
 }
@@ -140,6 +151,7 @@ func (s *APIServer) handleNewChallenger(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 }
@@ -157,6 +169,7 @@ func (s *APIServer) handleChallenge(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(challenge)
 }
