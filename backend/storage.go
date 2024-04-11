@@ -142,7 +142,6 @@ func (pgs *PostgresStorage) PostNewTrial(chid int) (*Trial, error) {
 		return nil, err
 	}
 	ch1, _ := pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
-	log.Info().Any("ch1", ch1).Msg("first opponent defined")
 
 	chat_pool = 10
 	if cnt > 100 {
@@ -158,7 +157,6 @@ func (pgs *PostgresStorage) PostNewTrial(chid int) (*Trial, error) {
 		return nil, err
 	}
 	ch2, _ := pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
-	log.Info().Any("ch2", ch2).Msg("second opponent defined")
 
 	var trID string
 	err = pgs.dbpool.QueryRow(context.Background(), "insert into trials(ref_challenger1, ref_challenger2, ref_challenge_id) values ($1, $2, $3) returning id", ch1.ID, ch2.ID, chid).Scan(&trID)
@@ -167,7 +165,6 @@ func (pgs *PostgresStorage) PostNewTrial(chid int) (*Trial, error) {
 		return nil, err
 	}
 	trial := NewTrial(trID, ch1, ch2)
-	log.Info().Any("trial", trial).Msg("trial")
 	return trial, nil
 }
 

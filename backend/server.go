@@ -42,7 +42,6 @@ func (s *APIServer) Run() {
 		AllowCredentials: true,
 		AllowedMethods:   []string{"POST", "GET", "OPTIONS", "PUT", "DELETE", "PATCH"},
 		AllowedHeaders:   []string{"*"},
-		Debug:            true,
 	})
 
 	handler := crs.Handler(router)
