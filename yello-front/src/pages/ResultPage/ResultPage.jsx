@@ -1,71 +1,42 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { useGetChallengersQuery } from "../../store/api/apiSlice";
+import { useParams } from "react-router-dom";
+import styles from "../../styles/ResultPage.module.css";
 
 
 const ResultPage = () => {
-    const { data, isLoading, isSuccess, isFetching, isError, error } = useGetChallengersQuery();
 
-    //if (results.length === 0) return <p className="text-center">No items</p>
+    const { id } = useParams();
+
+    const { data, isSuccess, isFetching, error } = useGetChallengersQuery({ id });
+ 
 
     if (isFetching) return <p>Loading</p>;
-    if (error) return  <p>Error: {error.toString()} </p>;
-    console.log(data)
+    if (error) return <p>Error: {error.toString()} </p>;
+
     return (
-        <>
-            {isSuccess && (
-                <div>
-                    {data.length == 0 && <div>Нет результатов</div>}
-                    <ul >
-                        {data?.map((post) => {
-                            return <li key={post.id}>
-                               <div>{post.title}</div>
-                            </li>
-                        }
+        <div className={styles.result_page}>
+            <div className={styles.container}>
+                <h1 className={styles.title}>Результаты</h1>
+                {isSuccess && (
+                    <div className={styles.content}>
+                        {data.length === 0 && <div className={styles.market_text}>Нет результатов</div>}
+                        <ul className={styles.post_list}>
+                            {data?.map((post) => {
+                                return <li key={post.id} className={styles.post_item}>
+                                    <a className={styles.post_title} href={post.link} target="_blank">{post.title}</a>
+                                    <div className={styles.post_rating}>{post.rating}</div>
+                                    <div className={styles.post_trials}>{post.trials}</div>
+                                </li>
+                            }
 
-                        )}
-                    </ul>
-                </div>
-
-
-            )}
-        </>
+                            )}
+                        </ul>
+                    </div>
+                )}
+            </div>
+        </div>
     )
 }
 
 export default ResultPage;
-/**
- * <ul className="list-none">
-                {favourites.map(f => (
-                    <li key={f}>
-                        <a href={f} target="_blank">{f}</a>
-                    </li>
-                ))}
-            </ul>
-
-
-
-            <div className="flex justify-center pt-10 mx-auto h-screen w-screen">
-            <h3>Game results</h3>
-        </div>
- */
-/**
- * <>
-            {isLoading ? (
-                <div >Loading...</div>
-            ) : !isSuccess || !data.length ? (
-                <div >
-                    <span>Нет результатов</span>
-                </div>
-            ) : (
-                <ul >
-                    {data.map(f => (
-                        <li key={f}>
-                            <a href={f} target="_blank">{f}</a>
-                        </li>
-                    ))}
-                </ul>
-
-            )}
-        </>
- */

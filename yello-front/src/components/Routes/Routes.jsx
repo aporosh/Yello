@@ -8,7 +8,7 @@ import ResultPage from "../../pages/ResultPage/ResultPage";
 
 const AppRoutes = () => (
     <Routes >
-        <Route index element={<HomePage />} />
+        <Route path={ROUTES.CHALLENGE} element={<HomePage />} />
         <Route path={ROUTES.RESULTS} element={<ResultPage />} />
     </Routes>
 );

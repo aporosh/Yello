@@ -8,11 +8,12 @@ import Footer from "../Footer/Footer";
 
 function App() {
   return (
-    <>
+    <div className={styles.app}>
       <Header />
-      <AppRoutes />
-      <Footer />
-    </>
+      <div className={styles.app_content}><AppRoutes /></div>
+      <div className={styles.app_footer}><Footer /></div>
+   
+    </div>
   );
 }
 
