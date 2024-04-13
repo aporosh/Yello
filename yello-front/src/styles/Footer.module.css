@@ -18,6 +18,12 @@
     border-color: transparent;
     border-style: solid;
     height: 90px;
+
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  
 }
   
 .logo {

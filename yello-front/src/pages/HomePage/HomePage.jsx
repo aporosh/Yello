@@ -1,21 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import styles from "../../styles/HomePage.module.css";
 
-import { useAddNewTrialsMutation, useUpdateTrialsMutation } from "../../store/api/apiSlice";
+import { useAddNewTrialsMutation, useGetChallengeByIdQuery, useUpdateTrialsMutation } from "../../store/api/apiSlice";
+import { useParams } from "react-router-dom";
 
 
 const HomePage = () => {
-    const [addNewTrials, response] = useAddNewTrialsMutation();
-    //const [dataGame, setDataGame] = useState(localStorage.trial);
+    const { id } = useParams();
+
+
+    const { isError, error, isSuccess } = useGetChallengeByIdQuery({ id });
+
+
+    const [addNewTrials] = useAddNewTrialsMutation({ id });
+
+    useEffect(() => {
+        if (isError) {
+            console.log("error " + isError)
+            localStorage.setItem('trial', "")
+            localStorage.setItem('trialId', "")
+            localStorage.setItem('trialList', "")
+            console.log("test")
+        } else {
+            if (isSuccess) {
+                console.log("isSuccess " + isSuccess)
+                addNewTrials({ id })
+            }
+        }
+
+
+    }, [isSuccess, isError])
 
     let list = localStorage.trialList ? JSON.parse(localStorage.trialList) : [];
-   const [updateTrials] = useUpdateTrialsMutation();
+    const [updateTrials] = useUpdateTrialsMutation({ id });
 
 
     function handleChoose(winner) {
         const loser = list.find(item => item.id !== winner)
-        updateTrials({ winner: `${winner}`, loser: `${loser.id}`})
-        addNewTrials()
+        updateTrials({ id, winner: `${winner}`, loser: `${loser.id}` })
+        addNewTrials({ id })
     }
 
     return (
@@ -23,20 +46,16 @@ const HomePage = () => {
             <div className={styles.container}>
                 <div className={styles.market}>
                     <div className={styles.market_title}>Yello</div>
-                    <div className={styles.market_text}>Какой-то текст для завлекания в игру например: Выберете что Вам нравится больше</div>
+                    {error && <div className={styles.head_error}>Error: {JSON.stringify(error)} </div>}
+                    {isSuccess && <div className={styles.head_text}>{localStorage.chDescription}</div>}
                 </div>
-
-                <div
-                    className={styles.poster_button}
-                    onClick={() => addNewTrials()}
-                >test button</div>
                 <div className={styles.game}>
-                    {list?.length == 0 && <div className={styles.market_text}>Нет результатов</div>}
-                    <ul >
+                    {list?.length === 0 && <div className={styles.head_error}>Нет данных</div>}
+                  
                         {list?.map((post) => {
                             return (
                                 <li key={post.id} className={styles.game_item}>
-                                    <a href={post.link} target="_blank"> <h3 className={styles.game_title}>{post.title}</h3></a>
+                                    <a href={post.link} target="_blank" className={styles.game_title}>{post.title}</a>
                                     <p className={styles.game_text}>{post.description}</p>
                                     <button
                                         className={styles.poster_button}
@@ -49,7 +68,7 @@ const HomePage = () => {
                         }
 
                         )}
-                    </ul>
+                   
                 </div>
             </div>
         </div>

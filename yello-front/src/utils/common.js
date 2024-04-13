@@ -8,3 +8,24 @@ export const buildUrl = (url, params) => {
     
     return urlWithParams;
 };
+
+export function getChallIdFromUrl(url){
+    let urlPrefix ='';
+
+    if (url.indexOf("challenge")) {
+        urlPrefix = "/challenge/"; 
+    } else {
+        if (url.indexOf("results")) {
+            urlPrefix = "/results/"; 
+        } 
+        else return "No id"
+    }
+    
+     console.log(url.slice(url.indexOf(urlPrefix) + urlPrefix.length))
+    return url.slice(url.indexOf(urlPrefix) + urlPrefix.length);
+  }
+  
+  export function getPathFromUrl(url){
+    const newUrl = new URL(url);
+    return newUrl.pathname.split("/")[1];
+  }

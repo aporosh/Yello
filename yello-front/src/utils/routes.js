@@ -1,4 +1,5 @@
 export const ROUTES = {
-    HOME: "/",
-    RESULTS: "/results",
+    //HOME: "/",
+    CHALLENGE: "/challenge/:id",
+    RESULTS: "/results/:id",
 };
