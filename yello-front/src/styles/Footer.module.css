@@ -1,20 +1,10 @@
 .footer {
-    /*
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    
-    margin-top: 20px;
-    */
     padding: 24px;
-
-    
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
- 
 
-    background-image: linear-gradient(225deg, rgba(6, 56, 82, 1) 15%, rgba(9, 42, 59, 1) 72%);
+    background-image: var(--bg-footer);
     border-color: transparent;
     border-style: solid;
     height: 90px;
@@ -23,43 +13,69 @@
     left: 0;
     bottom: 0;
     right: 0;
-  
 }
-  
+
 .logo {
+    grid-column: 1;
+    color: var(--yello);
     width: 61px;
-    color: #97ff29;
-    font-size: 30px;
+    font-size: clamp(20px, 1.005rem + 1.09vw, 30px);
     font-weight: 700;
     margin: 10px;
-    grid-column: 1;
-}
-/*
-.logo a {
-height: 100%;
-}
-*/
-.rights {
-    color: var(--dark-sea);
-    color: #576067;
-    color: #fff;
-    font-size: 15px;
-    line-height: 18px;
-    margin: 10px;
-    grid-column: 2 / 3;
 }
 
+.rights {
+    grid-column: 2 / 3;
+    color: var(--text-white);
+    opacity: 0.6;
+    font-size: clamp(10px, 0.503rem + 0.54vw, 15px);
+    line-height: 18px;
+    margin: 20px;
+}
 
 .poster_image {
-    position: relative;
     flex-grow: 1;
-    height: 250px;
+    height: clamp(90px, 2.935rem + 11.96vw, 200px);
     grid-column: 4;
 }
 
 .poster_image img {
     position: absolute;
-    bottom: 75%;
-    right: -2%;
-    max-width: 400px;
+    bottom: -2%;
+    right: 1%;
+    max-width: clamp(80px, -0.38rem + 23.91vw, 300px);
+}
+
+@media (max-width: 960px) {
+    .footer {
+        height: 80px;
+        padding: 13px;
+    }
+}
+
+
+@media (max-width: 360px) {
+    .footer {
+        height: 50px;
+        padding: 5px;      
+        grid-template-columns: 50px 140px 80px ;
+        gap: 5px;
+    }
+    .logo {
+        width: 40px;
+        font-size: 20px;
+        font-weight: 600;
+        margin: 5px;
+    }
+    .rights {
+        font-size: 10px;
+        line-height: 15px;
+        margin: 10px 0 0 40px;
+    }
+    .poster_image img {
+        max-width: 80px;
+        height: 90px;
+        bottom: -22%;
+        right: 3%;
+    }
 }
