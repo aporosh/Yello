@@ -10,8 +10,8 @@ function App() {
   return (
     <div className={styles.app}>
       <Header />
-      <div className={styles.app_content}><AppRoutes /></div>
-      <div className={styles.app_footer}><Footer /></div>
+      <AppRoutes />
+      <Footer />
    
     </div>
   );
