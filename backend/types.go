@@ -7,6 +7,8 @@ type Challenger struct {
 	Description string  `json:"description"`
 	Rating      float64 `json:"rating"`
 	Trials      int     `json:"trials"`
+	Active      bool    `json:"active"`
+	Resolution  string  `json:"resolution"`
 }
 
 func NewChallenger(id, title, link, description string) *Challenger {
@@ -17,6 +19,8 @@ func NewChallenger(id, title, link, description string) *Challenger {
 		Description: description,
 		Rating:      1000,
 		Trials:      0,
+		Active:      true,
+		Resolution:  "",
 	}
 }
 
