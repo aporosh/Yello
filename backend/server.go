@@ -93,7 +93,7 @@ func (s *APIServer) handleFinishTrial(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = s.store.PatchTrialResult(chid, mux.Vars(r)["trid"], req_tr.Winner, req_tr.Loser)
+	res, err := s.store.PatchTrialResult(chid, mux.Vars(r)["trid"], req_tr.Winner, req_tr.Loser)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -102,6 +102,7 @@ func (s *APIServer) handleFinishTrial(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
 	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
 }
 
 func (s *APIServer) handleNewTrial(w http.ResponseWriter, r *http.Request) {
@@ -133,6 +134,7 @@ func (s *APIServer) handleChallengers(w http.ResponseWriter, r *http.Request) {
 	}
 	challengers, err := s.store.GetChallengersList(chid)
 	if err != nil {
+		log.Error().Err(err).Msg("failed to build the list")
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
