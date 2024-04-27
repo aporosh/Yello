@@ -16,6 +16,7 @@ type Storage interface {
 	PostChallenge(*Challenge) (*Challenge, error)
 	GetChallengersList(int) ([]*Challenger, error)
 	PostChallenger(int, *Challenger) (*Challenger, error)
+	PatchChallenger(int, *Challenger) (*Challenger, error)
 	PostNewTrial(int) (*Trial, error)
 	PatchTrialResult(int, string, string, string) (*Trial, error)
 }
@@ -112,6 +113,16 @@ func (pgs *PostgresStorage) GetChallengersList(chid int) ([]*Challenger, error) 
 func (pgs *PostgresStorage) PostChallenger(chid int, postChr *Challenger) (*Challenger, error) {
 	log.Info().Any("challenger", postChr).Msg("insert new challenger")
 	res, err := pgs.dbpool.Query(context.Background(), "INSERT INTO challengers (title, link, description, ref_challenge_id) VALUES ($1, $2, $3, $4) RETURNING id, title, link, description, rating, trials, active, resolution", postChr.Title, postChr.Link, postChr.Description, chid)
+	if err != nil {
+		log.Error().Err(err).Msg("querry failed")
+		return nil, err
+	}
+	return pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
+}
+
+func (pgs *PostgresStorage) PatchChallenger(chid int, patchChr *Challenger) (*Challenger, error) {
+	log.Info().Any("challenger", patchChr).Msg("update challenger")
+	res, err := pgs.dbpool.Query(context.Background(), "UPDATE challengers SET active=$1, resolution=$2 WHERE (id = $3 AND ref_challenge_id = $4) RETURNING id, title, link, description, rating, trials, active, resolution", patchChr.Active, patchChr.Resolution, patchChr.ID, chid)
 	if err != nil {
 		log.Error().Err(err).Msg("querry failed")
 		return nil, err

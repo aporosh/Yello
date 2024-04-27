@@ -35,6 +35,7 @@ func (s *APIServer) Run() {
 	router.HandleFunc("/challenge/{chid}/trials", s.handleNewTrial).Methods(http.MethodPost)
 	router.HandleFunc("/challenge/{chid}/challengers", s.handleChallengers).Methods(http.MethodGet)
 	router.HandleFunc("/challenge/{chid}/challengers", s.handleNewChallenger).Methods(http.MethodPost)
+	router.HandleFunc("/challenge/{chid}/challengers/{chrid}", s.handleUpdateChallenger).Methods(http.MethodPatch)
 	router.HandleFunc("/challenge/{chid}", s.handleChallenge).Methods(http.MethodGet)
 
 	crs := cors.New(cors.Options{
@@ -81,7 +82,10 @@ func (s *APIServer) handleFinishTrialOpt(w http.ResponseWriter, r *http.Request)
 }
 
 func (s *APIServer) handleFinishTrial(w http.ResponseWriter, r *http.Request) {
-	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("Trial finished options")
+	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("trial finished")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
 	chid, err := strconv.Atoi(mux.Vars(r)["chid"])
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -98,9 +102,6 @@ func (s *APIServer) handleFinishTrial(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 }
@@ -168,6 +169,34 @@ func (s *APIServer) handleNewChallenger(w http.ResponseWriter, r *http.Request) 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
+}
+
+func (s *APIServer) handleUpdateChallenger(w http.ResponseWriter, r *http.Request) {
+	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("challenger updated")
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
+	chid, err := strconv.Atoi(mux.Vars(r)["chid"])
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	var req_chr Challenger
+	if err := json.NewDecoder(r.Body).Decode(&req_chr); err != nil {
+		log.Error().Err(err).Msg("cannot parse request body")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	req_chr.ID = mux.Vars(r)["chrid"]
+	res, err := s.store.PatchChallenger(chid, &req_chr)
+	if err != nil {
+		log.Error().Err(err).Msg("cannot upadate challenger")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 }
