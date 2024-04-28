@@ -42,7 +42,7 @@ const ResultPage = () => {
                     id="allResults"
                     name="allResults"
                     value={resType}
-                    checked={resType}
+                    defaultChecked={resType}
                     className={styles.checkbox_inp}
                     onClick={() => toggleCurrentResultsType()} />
                 <label htmlFor="allResults" className={styles.checkbox_label}>Показать все</label>
