@@ -23,6 +23,19 @@ a {
     padding: 35px;
 }
 
+.checkbox_inp{
+    accent-color: var(--yello);
+    width: 1.5em;
+	height: 1.5em;
+	margin-right: 0.65rem;
+    color-scheme: dark;
+	background-color: black;
+}
+.checkbox_label{
+    color: var(--text-white);
+    font-size: 35px;
+  
+}
 .market_text {
     font-weight: 500;
     font-size: 35px;
@@ -54,16 +67,20 @@ a {
 .post_rating {
     color: var(--yello);
     margin: 10px;
+    font-weight: 600;
 }
 
 .post_trials {
-    opacity: 0;
+    opacity: 0.8;
     margin: 10px;
     color: var(--empty);
 }
-.post_item:hover .post_trials{
-    opacity: 1;
+
+
+.post_opacity {
+   opacity: 0.5;
 }
+
 
 @media (max-width: 360px) {
     .post_item {
