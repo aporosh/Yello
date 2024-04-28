@@ -6,6 +6,7 @@ const challengeSlice = createSlice({
     initialState: {
         challengeId: '',
         pageType: `${window.location.pathname.split('/')[1]}`,
+        resType: false, //show only active results, true - show all results
     },
     reducers: {
         togglePageType: (state, { payload }) => {
@@ -14,8 +15,11 @@ const challengeSlice = createSlice({
         getIdFromUrl: (state) => {
             state.challengeId = getChallIdFromUrl(window.location.href);
         },
+        toggleResultsType: (state, { payload }) => {
+            state.resType = !state.resType;
+        }, 
     }
 });
-export const { togglePageType, getIdFromUrl } = challengeSlice.actions;
+export const { togglePageType, getIdFromUrl, toggleResultsType } = challengeSlice.actions;
 
 export default challengeSlice.reducer;

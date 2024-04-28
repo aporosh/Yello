@@ -47,17 +47,19 @@ const HomePage = () => {
                     {list?.map((post) => {
                         return (
                             <li key={post.id} className={styles.game_item}>
-                                <div>
+                                <div className={styles.item_content}>
                                     <a href={post.link} target="_blank" className={styles.game_title}>{post.title}</a>
                                     <p className={styles.game_text}>{post.description}</p>
                                 </div>
+                                <div className={styles.btn}>
+                                    <button
+                                        className={styles.poster_button}
+                                        onClick={() => handleChoose(post.id)}
+                                    >
+                                        Выбрать
+                                    </button>
+                                </div>
 
-                                <button
-                                    className={styles.poster_button}
-                                    onClick={() => handleChoose(post.id)}
-                                >
-                                    Выбери меня
-                                </button>
                             </li>
                         )
                     }

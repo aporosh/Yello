@@ -31,6 +31,7 @@
     font-size: clamp(10px, 0.503rem + 0.54vw, 15px);
     line-height: 18px;
     margin: 20px;
+    justify-self: center;
 }
 
 .poster_image {
@@ -52,7 +53,22 @@
         padding: 13px;
     }
 }
-
+@media (max-width: 520px) {
+    .rights {
+        margin: 15px;
+    }
+}
+@media (max-width: 480px) {
+    .footer {
+        height: 60px;
+        padding: 5px;      
+        grid-template-columns: 100px 140px 80px ;
+        gap: 20px;
+    }
+    .rights {
+        margin: 14px;
+    }
+}
 
 @media (max-width: 360px) {
     .footer {
