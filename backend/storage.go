@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/rand/v2"
 
+	"github.com/go-co-op/gocron/v2"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog/log"
@@ -39,6 +40,11 @@ func NewPostgressStorage(connSting string) *PostgresStorage {
 		dbpool: dbpool,
 	}
 	pgs.Init()
+
+	sched, _ := gocron.NewScheduler()
+	_, _ = sched.NewJob(gocron.CronJob("30 3 * * *", false), gocron.NewTask(pgs.clearTrials))
+	sched.Start()
+
 	return &pgs
 }
 
@@ -76,6 +82,13 @@ func (pgs *PostgresStorage) Init() {
 	`)
 	if err != nil {
 		log.Error().Err(err).Msg("db init failed")
+	}
+}
+
+func (pgs *PostgresStorage) clearTrials() {
+	log.Info().Msg("removing old trials")
+	if _, err := pgs.dbpool.Exec(context.Background(), "DELETE FROM public.trials"); err != nil {
+		log.Error().Err(err).Msg("failed to clear trials")
 	}
 }
 
