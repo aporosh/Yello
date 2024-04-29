@@ -25,12 +25,12 @@ func NewChallenger(id, title, link, description string) *Challenger {
 }
 
 type Challenge struct {
-	ID          int    `json:"id"`
+	ID          string `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 }
 
-func NewChallenge(id int, title, description string) *Challenge {
+func NewChallenge(id string, title, description string) *Challenge {
 	return &Challenge{
 		ID:          id,
 		Title:       title,
@@ -52,7 +52,7 @@ type TrialDAO struct {
 	Ref_challenger2  string
 	Ref_Winner       string
 	Ref_Loser        string
-	Ref_challenge_id int
+	Ref_challenge_id string
 	Delta            float32
 }
 

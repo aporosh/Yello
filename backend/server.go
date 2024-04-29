@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -86,18 +85,13 @@ func (s *APIServer) handleFinishTrial(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
-	chid, err := strconv.Atoi(mux.Vars(r)["chid"])
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
 	var req_tr TrialDTO
 	if err := json.NewDecoder(r.Body).Decode(&req_tr); err != nil {
 		log.Error().Err(err).Msg("Cannot parse request body")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	res, err := s.store.PatchTrialResult(chid, mux.Vars(r)["trid"], req_tr.Winner, req_tr.Loser)
+	res, err := s.store.PatchTrialResult(mux.Vars(r)["chid"], mux.Vars(r)["trid"], req_tr.Winner, req_tr.Loser)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -108,67 +102,52 @@ func (s *APIServer) handleFinishTrial(w http.ResponseWriter, r *http.Request) {
 
 func (s *APIServer) handleNewTrial(w http.ResponseWriter, r *http.Request) {
 	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("New trial requested")
-	chid, err := strconv.Atoi(mux.Vars(r)["chid"])
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	trial, err := s.store.PostNewTrial(chid)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
+	trial, err := s.store.PostNewTrial(mux.Vars(r)["chid"])
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(trial)
 }
 
 func (s *APIServer) handleChallengers(w http.ResponseWriter, r *http.Request) {
 	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("Challengers list requested")
-	chid, err := strconv.Atoi(mux.Vars(r)["chid"])
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	challengers, err := s.store.GetChallengersList(chid)
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
+	challengers, err := s.store.GetChallengersList(mux.Vars(r)["chid"])
 	if err != nil {
 		log.Error().Err(err).Msg("failed to build the list")
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(challengers)
 }
 
 func (s *APIServer) handleNewChallenger(w http.ResponseWriter, r *http.Request) {
 	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("new challenger posted")
-	chid, err := strconv.Atoi(mux.Vars(r)["chid"])
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
 	var req_chr Challenger
 	if err := json.NewDecoder(r.Body).Decode(&req_chr); err != nil {
 		log.Error().Err(err).Msg("cannot parse request body")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	res, err := s.store.PostChallenger(chid, &req_chr)
+	res, err := s.store.PostChallenger(mux.Vars(r)["chid"], &req_chr)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 }
@@ -179,11 +158,6 @@ func (s *APIServer) handleUpdateChallenger(w http.ResponseWriter, r *http.Reques
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
-	chid, err := strconv.Atoi(mux.Vars(r)["chid"])
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
 	var req_chr Challenger
 	if err := json.NewDecoder(r.Body).Decode(&req_chr); err != nil {
 		log.Error().Err(err).Msg("cannot parse request body")
@@ -191,7 +165,7 @@ func (s *APIServer) handleUpdateChallenger(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	req_chr.ID = mux.Vars(r)["chrid"]
-	res, err := s.store.PatchChallenger(chid, &req_chr)
+	res, err := s.store.PatchChallenger(mux.Vars(r)["chid"], &req_chr)
 	if err != nil {
 		log.Error().Err(err).Msg("cannot upadate challenger")
 		w.WriteHeader(http.StatusInternalServerError)
@@ -203,20 +177,15 @@ func (s *APIServer) handleUpdateChallenger(w http.ResponseWriter, r *http.Reques
 
 func (s *APIServer) handleChallenge(w http.ResponseWriter, r *http.Request) {
 	log.Info().Str("Method", r.Method).Str("URL", r.RequestURI).Msg("Challenge requested")
-	chid, err := strconv.Atoi(mux.Vars(r)["chid"])
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	challenge, err := s.store.GetChallenge(chid)
-	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		return
-	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
+	challenge, err := s.store.GetChallenge(mux.Vars(r)["chid"])
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(challenge)
 }

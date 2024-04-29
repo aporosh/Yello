@@ -13,13 +13,13 @@ import (
 )
 
 type Storage interface {
-	GetChallenge(int) (*Challenge, error)
+	GetChallenge(string) (*Challenge, error)
 	PostChallenge(*Challenge) (*Challenge, error)
-	GetChallengersList(int) ([]*Challenger, error)
-	PostChallenger(int, *Challenger) (*Challenger, error)
-	PatchChallenger(int, *Challenger) (*Challenger, error)
-	PostNewTrial(int) (*Trial, error)
-	PatchTrialResult(int, string, string, string) (*Trial, error)
+	GetChallengersList(string) ([]*Challenger, error)
+	PostChallenger(string, *Challenger) (*Challenger, error)
+	PatchChallenger(string, *Challenger) (*Challenger, error)
+	PostNewTrial(string) (*Trial, error)
+	PatchTrialResult(string, string, string, string) (*Trial, error)
 }
 
 type PostgresStorage struct {
@@ -78,6 +78,12 @@ func (pgs *PostgresStorage) Init() {
 	);
 	ALTER TABLE IF EXISTS public.challengers ADD IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT true ;
 	ALTER TABLE IF EXISTS public.challengers ADD IF NOT EXISTS resolution VARCHAR(250) NOT NULL DEFAULT '';
+
+	ALTER TABLE public.trials ALTER COLUMN ref_challenge_id TYPE varchar(250);
+	ALTER TABLE public.challengers ALTER COLUMN ref_challenge_id TYPE varchar(250);
+	ALTER TABLE public.challenges ALTER COLUMN id TYPE varchar(250);
+	ALTER TABLE public.challenges ALTER COLUMN id SET DEFAULT gen_random_uuid();
+
 	
 	`)
 	if err != nil {
@@ -103,27 +109,27 @@ func (pgs *PostgresStorage) PostChallenge(postCh *Challenge) (*Challenge, error)
 	return pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenge])
 }
 
-func (pgs *PostgresStorage) GetChallenge(chid int) (*Challenge, error) {
-	log.Info().Int("challenge-id", chid).Msg("Querry challenge by id")
+func (pgs *PostgresStorage) GetChallenge(chid string) (*Challenge, error) {
+	log.Info().Str("challenge-id", chid).Msg("querry challenge by id")
 	res, err := pgs.dbpool.Query(context.Background(), "select id, title, description from challenges where id=$1", chid)
 	if err != nil {
-		log.Error().Err(err).Msg("Querry failed")
+		log.Error().Err(err).Msg("querry failed")
 		return nil, err
 	}
 	return pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenge])
 }
 
-func (pgs *PostgresStorage) GetChallengersList(chid int) ([]*Challenger, error) {
-	log.Info().Int("challenge-id", chid).Msg("Querry challengers list by challenge id")
+func (pgs *PostgresStorage) GetChallengersList(chid string) ([]*Challenger, error) {
+	log.Info().Str("challenge-id", chid).Msg("querry challengers list by challenge id")
 	res, err := pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials, active, resolution FROM challengers WHERE ref_challenge_id = $1 order by rating desc", chid)
 	if err != nil {
-		log.Error().Err(err).Msg("Querry failed")
+		log.Error().Err(err).Msg("querry failed")
 		return nil, err
 	}
 	return pgx.CollectRows(res, pgx.RowToAddrOfStructByName[Challenger])
 }
 
-func (pgs *PostgresStorage) PostChallenger(chid int, postChr *Challenger) (*Challenger, error) {
+func (pgs *PostgresStorage) PostChallenger(chid string, postChr *Challenger) (*Challenger, error) {
 	log.Info().Any("challenger", postChr).Msg("insert new challenger")
 	res, err := pgs.dbpool.Query(context.Background(), "INSERT INTO challengers (title, link, description, ref_challenge_id) VALUES ($1, $2, $3, $4) RETURNING id, title, link, description, rating, trials, active, resolution", postChr.Title, postChr.Link, postChr.Description, chid)
 	if err != nil {
@@ -133,7 +139,7 @@ func (pgs *PostgresStorage) PostChallenger(chid int, postChr *Challenger) (*Chal
 	return pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
 }
 
-func (pgs *PostgresStorage) PatchChallenger(chid int, patchChr *Challenger) (*Challenger, error) {
+func (pgs *PostgresStorage) PatchChallenger(chid string, patchChr *Challenger) (*Challenger, error) {
 	log.Info().Any("challenger", patchChr).Msg("update challenger")
 	res, err := pgs.dbpool.Query(context.Background(), "UPDATE challengers SET active=$1, resolution=$2 WHERE (id = $3 AND ref_challenge_id = $4) RETURNING id, title, link, description, rating, trials, active, resolution", patchChr.Active, patchChr.Resolution, patchChr.ID, chid)
 	if err != nil {
@@ -143,17 +149,17 @@ func (pgs *PostgresStorage) PatchChallenger(chid int, patchChr *Challenger) (*Ch
 	return pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
 }
 
-func (pgs *PostgresStorage) PostNewTrial(chid int) (*Trial, error) {
-	log.Info().Int("challenge-id", chid).Msg("Request new trial")
+func (pgs *PostgresStorage) PostNewTrial(chid string) (*Trial, error) {
+	log.Info().Str("challenge-id", chid).Msg("request new trial")
 	var cnt int
 	err := pgs.dbpool.QueryRow(context.Background(), "SELECT count(*) FROM challengers WHERE ref_challenge_id = $1 AND active = true", chid).Scan(&cnt)
 	if err != nil {
-		log.Error().Err(err).Msg("Querry failed")
+		log.Error().Err(err).Msg("querry failed")
 		return nil, err
 	}
 	log.Info().Int("count", cnt).Msg("amount of challengers")
 	if cnt < 2 {
-		log.Info().Msg("Not enough challengers")
+		log.Info().Msg("not enough challengers")
 		return nil, errors.New("not enough challengers")
 	}
 
@@ -180,7 +186,7 @@ func (pgs *PostgresStorage) PostNewTrial(chid int) (*Trial, error) {
 	ch2_pos := rand.IntN(chat_pool)
 	res, err = pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials, active, resolution FROM challengers WHERE ref_challenge_id = $1 AND id != $2 AND active = true ORDER BY abs(rating - $3) ASC, trials DESC OFFSET $4 LIMIT 1", chid, ch1.ID, ch1.Rating, ch2_pos)
 	if err != nil {
-		log.Error().Err(err).Msg("Querry failed")
+		log.Error().Err(err).Msg("querry failed")
 		return nil, err
 	}
 	ch2, _ := pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
@@ -188,15 +194,15 @@ func (pgs *PostgresStorage) PostNewTrial(chid int) (*Trial, error) {
 	var trID string
 	err = pgs.dbpool.QueryRow(context.Background(), "insert into trials(ref_challenger1, ref_challenger2, ref_challenge_id) values ($1, $2, $3) returning id", ch1.ID, ch2.ID, chid).Scan(&trID)
 	if err != nil {
-		log.Error().Err(err).Msg("Querry failed")
+		log.Error().Err(err).Msg("querry failed")
 		return nil, err
 	}
 	trial := NewTrial(trID, ch1, ch2)
 	return trial, nil
 }
 
-func (pgs *PostgresStorage) PatchTrialResult(chid int, trid, win, los string) (*Trial, error) {
-	log.Info().Int("challenge-id", chid).Str("trial", trid).Str("winner", win).Str("loser", los).Msg("Finish a trial")
+func (pgs *PostgresStorage) PatchTrialResult(chid string, trid, win, los string) (*Trial, error) {
+	log.Info().Str("challenge-id", chid).Str("trial", trid).Str("winner", win).Str("loser", los).Msg("Finish a trial")
 	if win == los {
 		log.Error().Msg("same loser and winner")
 		return nil, errors.New("same loser and winner")
@@ -232,22 +238,22 @@ func (pgs *PostgresStorage) PatchTrialResult(chid int, trid, win, los string) (*
 	}
 	res, err = pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials, active, resolution FROM challengers WHERE id = $1 for update", win)
 	if err != nil {
-		log.Error().Err(err).Msg("Querry failed")
+		log.Error().Err(err).Msg("querry failed")
 		return nil, err
 	}
 	winner, err := pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
 	if err != nil {
-		log.Error().Err(err).Msg("Winner parsing failed")
+		log.Error().Err(err).Msg("winner parsing failed")
 		return nil, err
 	}
 	res, err = pgs.dbpool.Query(context.Background(), "SELECT id, title, link, description, rating, trials, active, resolution FROM challengers WHERE id = $1 for update", los)
 	if err != nil {
-		log.Error().Err(err).Msg("Querry failed")
+		log.Error().Err(err).Msg("querry failed")
 		return nil, err
 	}
 	loser, err := pgx.CollectOneRow(res, pgx.RowToAddrOfStructByName[Challenger])
 	if err != nil {
-		log.Error().Err(err).Msg("Loser parsing failed")
+		log.Error().Err(err).Msg("loser parsing failed")
 		return nil, err
 	}
 
@@ -263,11 +269,11 @@ func (pgs *PostgresStorage) PatchTrialResult(chid int, trid, win, los string) (*
 	tr.Winner = winner.ID
 
 	if _, err = tx.Exec(ctx, "update trials set ref_winner = $1, ref_loser = $2, delta = $3 where id=$4", win, los, final_delta, trid); err != nil {
-		log.Error().Err(err).Msg("Failed to save trial")
+		log.Error().Err(err).Msg("failed to save trial")
 		return nil, err
 	}
 	if _, err = tx.Exec(ctx, "update challengers set rating = $1, trials = $2 where id=$3", winner.Rating, winner.Trials, win); err != nil {
-		log.Error().Err(err).Msg("Failed to save winner")
+		log.Error().Err(err).Msg("failed to save winner")
 		return nil, err
 	}
 	if _, err = tx.Exec(ctx, "update challengers set rating = $1, trials = $2 where id=$3", loser.Rating, loser.Trials, los); err != nil {
