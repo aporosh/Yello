@@ -27,15 +27,21 @@
 
 .head_text {
     font-weight: 500;
-    font-size: 35px;
     font-size: clamp(1.375rem, 1.172rem + 1.02vw, 2.188rem);
-    line-height: 51px;
+    line-height: clamp(22px, 1.094rem + 1.41vw, 40px);
     color: var(--text-white);
     max-width: 600px;
     margin: 10px 0 24px 0;
+    height: clamp(90px, 3.984rem + 8.2vw, 195px);
     overflow: auto;
     scrollbar-width: none;
 }
+.head_title{
+    font-weight: 600;
+    line-height: clamp(25px, 1.25rem + 1.56vw, 45px);
+    margin-bottom: 10px;
+}
+
 
 .head_error {
     font-weight: 500;
@@ -66,7 +72,7 @@
 }
 
 .game_item {
-    max-width: 540px;
+    width: clamp(210px, -0.591rem + 37.84vw, 630px);
     border-radius: 20px;
     background-image: var(--bg-post);
     display: flex;
@@ -78,7 +84,6 @@
 }
 
 .item_content {
-    overflow-y: overlay;
     height: 300px;
     margin-bottom: 10px;
     overflow: auto;
@@ -87,7 +92,6 @@
 
 .game_title {
     color: var(--text-dark);
-    font-size: 30px;
     font-size: clamp(20px, 1.094rem + 0.78vw, 30px);
     font-family: 'Raleway', Arial, sans-serif;
     font-weight: 700;
@@ -105,7 +109,6 @@
     font-weight: 500;
     border-color: transparent;
     line-height: clamp(17px, 0.769rem + 1.3vw, 29px);
-    max-width: 366px;
     zoom: 1.266;
     margin: 5px 5px 0;
 
@@ -155,15 +158,6 @@
 }
 
 @media (max-width: 960px) {
-    /*
-    .head_text {
-        font-size: 33px;
-    }
-    
-    .game_title {
-        font-size: 28px;
-    }
-    */
     .game_item {
         padding: 17px;
         margin: 8px;
@@ -171,6 +165,9 @@
 }
 
 @media (width > 580px) and (height > 850px) {
+    .head_text{
+        height: auto;
+    }
     .game {
         grid-template-columns: 1fr 1fr;
     }
@@ -178,6 +175,7 @@
     .game_item {
         height: 330px;
         max-width: none;
+        width: clamp(210px, -4.837rem + 49.55vw, 760px);
     }
     .item_content {
         height: 290px;
@@ -194,9 +192,11 @@
     .game_item {
         height: 300px;
         padding: 15px;
+        max-width: none;
+        width: clamp(210px, -4.837rem + 49.55vw, 760px);
     }
     .head_text {
-        /*height: 102px;*/
+        height: 110px;
         margin: 10px 0 0 0;
     }
 }
@@ -210,14 +210,14 @@
         padding: 9px;
     }
     .head_text {
-       /* height: 60px;*/
         margin: 10px 0 0 0;
-        line-height: 35px;
-       /* font-size: 30px;*/
     }
 }
 
 @media (max-width: 580px) {
+    .market_title{
+        margin: 0 20px 0 10px;
+    }
     .game {
         display: flex;
         flex-wrap: wrap;
@@ -233,11 +233,20 @@
 }
 
 @media (max-width: 480px) {
+    .market{
+        margin-bottom: 10px;
+    }
     .market_title {
         display: none;
     }
+    .game{
+        gap: 10px;
+    }
     .game_item {
         width: 350px;
+    }
+    .head_text{
+        margin: 10px 0 10px 0;
     }
 }
 
@@ -252,13 +261,14 @@
     .head_error,
     .head_text {
         font-size: 22px;
-        line-height: 20px;
         margin: 10px 5px;
+        height: 90px;
     }
     .game_item {
         width: 260px;
         padding: 10px;
         margin: 8px;
+        margin: 0;
     }
     .game_text {
         font-size: 12px;
