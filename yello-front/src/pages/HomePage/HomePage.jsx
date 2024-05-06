@@ -39,7 +39,10 @@ const HomePage = () => {
                 <div className={styles.market}>
                     <div className={styles.market_title}>Yello</div>
                     {error && <div className={styles.head_error}>Такого ChallengeId не существует</div>}
-                    {isSuccess && <div className={styles.head_text}>{localStorage.chDescription}</div>}
+                    {isSuccess && <div className={styles.head_text}>
+                        <div >{localStorage.chTitle}</div>
+                        <div >{localStorage.chDescription}</div>
+                    </div> }
                 </div>
                 {!error && <div className={styles.game}>
                     {list?.length === 0 && <div className={styles.empty}>Нет данных</div>}

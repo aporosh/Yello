@@ -5,13 +5,13 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL}), 
   tagTypes: ['Challengers', 'Challenge'],
-  refetchOnReconnect: true,
   endpoints: (builder) => ({
     getChallengeById: builder.query({
       query: ({ id }) => `${id}`,
       providesTags: ["Challenge"],
       transformResponse: (response) => {
         localStorage.setItem('challengeId', response.id)
+        localStorage.setItem('chTitle', response.title)
         localStorage.setItem('chDescription', response.description)
       },
     }),
@@ -53,4 +53,10 @@ export const apiSlice = createApi({
 
 })
 
-export const { useGetChallengeByIdQuery ,useGetChallengersQuery, useLazyGetChallengersQuery, useAddNewTrialsMutation, useUpdateTrialsMutation } = apiSlice;
+export const { 
+  useGetChallengeByIdQuery, 
+  useGetChallengersQuery, 
+  useLazyGetChallengersQuery, 
+  useAddNewTrialsMutation, 
+  useUpdateTrialsMutation 
+} = apiSlice;

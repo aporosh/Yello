@@ -3,13 +3,14 @@
     display: flex;
     flex-direction: column;
     min-height: 91vh;
+    overflow: scroll;
 }
 
 .container {
     margin: 0 20px;
     flex-grow: 1;
+    margin-bottom: 40px;
 }
-
 .market {
     display: flex;
     margin-bottom: 20px;
@@ -27,10 +28,13 @@
 .head_text {
     font-weight: 500;
     font-size: 35px;
+    font-size: clamp(1.375rem, 1.172rem + 1.02vw, 2.188rem);
     line-height: 51px;
     color: var(--text-white);
     max-width: 600px;
     margin: 10px 0 24px 0;
+    overflow: auto;
+    scrollbar-width: none;
 }
 
 .head_error {
@@ -77,11 +81,14 @@
     overflow-y: overlay;
     height: 300px;
     margin-bottom: 10px;
+    overflow: auto;
+    scrollbar-width: none;
 }
 
 .game_title {
     color: var(--text-dark);
     font-size: 30px;
+    font-size: clamp(20px, 1.094rem + 0.78vw, 30px);
     font-family: 'Raleway', Arial, sans-serif;
     font-weight: 700;
     border-color: transparent;
@@ -148,12 +155,15 @@
 }
 
 @media (max-width: 960px) {
+    /*
     .head_text {
         font-size: 33px;
     }
+    
     .game_title {
         font-size: 28px;
     }
+    */
     .game_item {
         padding: 17px;
         margin: 8px;
@@ -186,7 +196,7 @@
         padding: 15px;
     }
     .head_text {
-        height: 102px;
+        /*height: 102px;*/
         margin: 10px 0 0 0;
     }
 }
@@ -200,10 +210,10 @@
         padding: 9px;
     }
     .head_text {
-        height: 60px;
+       /* height: 60px;*/
         margin: 10px 0 0 0;
         line-height: 35px;
-        font-size: 30px;
+       /* font-size: 30px;*/
     }
 }
 
@@ -243,7 +253,7 @@
     .head_text {
         font-size: 22px;
         line-height: 20px;
-        margin: 10px 0;
+        margin: 10px 5px;
     }
     .game_item {
         width: 260px;
@@ -255,7 +265,7 @@
         line-height: 16px;
     }
     .game_title {
-        font-size: 22px;
+        font-size: 20px;
     }
     .poster_button {
         font-size: 14px;
