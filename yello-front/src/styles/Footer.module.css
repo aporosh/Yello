@@ -37,6 +37,7 @@
 .poster_image {
     flex-grow: 1;
     height: clamp(90px, 2.935rem + 11.96vw, 200px);
+    height: clamp(5.625rem, 3.906rem + 8.59vw, 12.5rem);
     grid-column: 4;
 }
 
@@ -45,6 +46,7 @@
     bottom: -2%;
     right: 1%;
     max-width: clamp(80px, -0.38rem + 23.91vw, 300px);
+    min-width: clamp(5rem, 1.563rem + 17.19vw, 18.75rem);
 }
 
 @media (max-width: 960px) {
