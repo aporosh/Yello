@@ -40,8 +40,8 @@ const HomePage = () => {
                     <div className={styles.market_title}>Yello</div>
                     {error && <div className={styles.head_error}>Такого ChallengeId не существует</div>}
                     {isSuccess && <div className={styles.head_text}>
-                        <div >{localStorage.chTitle}</div>
-                        <div >{localStorage.chDescription}</div>
+                        <div className={styles.head_title}>{localStorage.chTitle}</div>
+                        <div className={styles.head_description}>{localStorage.chDescription}</div>
                     </div> }
                 </div>
                 {!error && <div className={styles.game}>
