@@ -75,7 +75,7 @@ const ResultPage = () => {
                 </div>}
             </div>
 
-            <div className={styles.container}>
+            <div className={styles.container} id='result'>
                 {isSuccess && (
                     <div className={styles.content}>
                         {data.length === 0 && <div className={styles.market_text}>Нет результатов</div>}
