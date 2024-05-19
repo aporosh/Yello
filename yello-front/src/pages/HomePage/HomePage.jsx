@@ -12,7 +12,7 @@ const HomePage = () => {
     const { isError, error, isSuccess } = useGetChallengeByIdQuery({ id });
 
     const [addNewTrials] = useAddNewTrialsMutation({ id });
-
+   
     useEffect(() => {
         if (isError) {
             localStorage.clear();
@@ -30,38 +30,10 @@ const HomePage = () => {
     function handleChoose(winner) {
         const loser = list.find(item => item.id !== winner)
         updateTrials({ id, winner: `${winner}`, loser: `${loser.id}` })
-       
+
         addNewTrials({ id })
     }
 
-    const animateButton = (e) => {
-        //e.preventDefault;
-        //reset animation
-        console.log(e)
-      /*  e.target.classList.remove('animate');
-        
-        e.target.classList.add('animate');
-        setTimeout(function(){
-          e.target.classList.remove('animate');
-        },700);
-        */
-      };
-
-     /* 
-      var bubblyButtons = document.getElementsByClassName("bubbly_button");
-      
-      for (var i = 0; i < bubblyButtons.length; i++) {
-        bubblyButtons[i].addEventListener('click', animateButton, false);
-      }
-*/
-//document.addEventListener('click', function(){ console.log(this, arguments); });
-/*
-var  bubblyButtons = document.getElementById("bubbly_button")
-for (var i = 0; i < bubblyButtons.length; i++) {
-    bubblyButtons[i].addEventListener('click', function(e){ console.log(e.target.id); });
-  }
-  */
-//bubblyButtons.addEventListener('click', function(){ console.log(this, arguments); });
     return (
         <div className={styles.home_page}>
             <div className={styles.container}>
@@ -71,11 +43,10 @@ for (var i = 0; i < bubblyButtons.length; i++) {
                     {isSuccess && <div className={styles.head_text}>
                         <div className={styles.head_title}>{localStorage.chTitle}</div>
                         <div className={styles.head_description}>{localStorage.chDescription}</div>
-                    </div> }
+                    </div>}
                 </div>
                 {!error && <div className={styles.game}>
                     {list?.length === 0 && <div className={styles.empty}>Нет данных</div>}
-
                     {list?.map((post) => {
                         return (
                             <li key={post.id} className={styles.game_item}>
@@ -87,7 +58,6 @@ for (var i = 0; i < bubblyButtons.length; i++) {
                                     <button
                                         className={styles.poster_button}
                                         onClick={() => handleChoose(post.id)}
-                                        id={styles["bubbly_button"]}
                                     >
                                         Выбрать
                                     </button>
@@ -96,10 +66,8 @@ for (var i = 0; i < bubblyButtons.length; i++) {
                             </li>
                         )
                     }
-
                     )}
-
-                </div>}
+                </div>}               
             </div>
         </div>
     )
