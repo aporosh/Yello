@@ -14,7 +14,7 @@ const Header = () => {
 
     return (
         <header className={styles.header}>
-            <h3 className={styles.header_title} id="header">Yello</h3>
+            <h3 className={styles.header_title}>Yello</h3>
             
                 {pageType === "challenge" ? (
                     <Link

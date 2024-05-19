@@ -3,7 +3,6 @@ import React from "react";
 import styles from "../../styles/Footer.module.css";
 
 import BG from "../../images/cat.png";
-import AU from "../../images/arrow-up-30.png";
 
 const Footer = () => (
 
