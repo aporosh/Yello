@@ -1,0 +1,21 @@
+.up, .down{
+    width: 30px;
+    height: 30px;
+    z-index: 2;
+    background-image: url(../images/arrow-up-30.png);
+    position: absolute;
+    right: 25%;
+    bottom: 28%;
+}
+
+.up:hover{
+    background-image: url(../images/arrow-up-30-yello.png);
+}
+.down{
+    transform: rotate(180deg);
+}
+
+.down:hover{
+    background-image: url(../images/arrow-up-30-yello.png);
+    transform: rotate(180deg);
+}
