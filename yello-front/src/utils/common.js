@@ -29,3 +29,9 @@ export function getChallIdFromUrl(url){
     const newUrl = new URL(url);
     return newUrl.pathname.split("/")[1];
   }
+
+  export function getPage() {
+    const page = window.location.pathname.split('/')
+    if (page.includes('results')) return 'results';
+    else return page[1]
+}

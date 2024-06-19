@@ -29,8 +29,3 @@ return (
 }
 
 export default Footer;
-/**
- * <a href="#" className={styles.test}>
-           
-        </a>
- */

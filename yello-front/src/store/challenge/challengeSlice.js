@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getChallIdFromUrl } from "../../utils/common";
+import { getChallIdFromUrl, getPage } from "../../utils/common";
 
 const challengeSlice = createSlice({
     name: "challenge",
     initialState: {
         challengeId: '',
-        pageType: `${window.location.pathname.split('/')[1]}`,
+        pageType: getPage(),
         resType: false, //show only active results, true - show all results
     },
     reducers: {
@@ -23,3 +23,4 @@ const challengeSlice = createSlice({
 export const { togglePageType, getIdFromUrl, toggleResultsType } = challengeSlice.actions;
 
 export default challengeSlice.reducer;
+//`${window.location.pathname.split('/')[1]}`
