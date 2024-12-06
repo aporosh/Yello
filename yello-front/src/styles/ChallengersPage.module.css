@@ -1,0 +1,224 @@
+.result_page {
+    background-color: var(--bg-page);
+
+    min-height: 91vh;
+    overflow: scroll;
+
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-template-rows: 70px 1fr;
+}
+
+ul {
+    list-style-type: none;
+}
+a {
+    text-decoration: none;
+}
+.head{
+    display: flex;
+    justify-content: space-between;
+    padding: 35px;
+   
+    align-items: center;
+    grid-row: 1;
+}
+.container {
+    flex-grow: 1;   
+    margin-bottom: 70px;
+    grid-row: 2;
+}
+
+.title {
+    color: var(--btn-hover);
+    font-size: 40px;
+    font-size: clamp(24px, 1.25rem + 1.25vw, 40px);
+    font-weight: 700;
+    /*
+    width: clamp(11.875rem, 1.134rem + 53.7vw, 48.125rem);
+    width: clamp(11.875rem, 0.579rem + 56.48vw, 50rem);
+    */
+    
+}
+
+.btn_create {
+    display: flex;
+    justify-content: space-between;
+    color: #000;
+    height: 30px;
+    padding: 4px;
+    font-size: 14px;
+    font-family: 'DrukWide', Arial, sans-serif;
+    line-height: 1.55;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 5px;
+    width: 400px;
+    background-color: #ffc20d;
+    border-color: transparent;
+    border-style: solid;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+.btn_create:hover{
+    background-color: orange;
+}
+.checkbox_cont{
+    color: var(--text-white);
+    display: flex;
+    font-weight: 400;
+    font-size: clamp(19px, 1.041rem + 0.65vw, 25px);
+}
+.checkbox_inp{
+    accent-color: var(--yello);
+    width: 1.5em;
+	height: 1.5em;
+	margin-right: 0.65rem;
+    color-scheme: dark;
+	background-color: black;
+}
+.checkbox_label{
+    color: var(--text-white);
+    font-size: 25px;
+  
+}
+.market_text {
+    font-weight: 500;
+    font-size: 35px;
+    line-height: 51px;
+    color: var(--empty);
+    margin: 10px 0 24px 0;
+}
+
+.post_item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+   
+    margin: 10px;
+    font-weight: 400;
+    font-size: clamp(19px, 1.041rem + 0.65vw, 25px);
+}
+.content {
+    margin: 10px 30px;
+}
+
+.post_title {
+    color: var(--text-white);
+    cursor: pointer;
+    margin: 10px;
+    max-width: clamp(12.5rem, 0.237rem + 61.31vw, 65rem);
+}
+.post_title:hover {
+    color: var(--btn-hover);
+}
+.post_numb{
+    display: flex;
+    width: 100px;
+}
+.post_rating {
+    color: var(--yello);
+    margin: 10px;
+    font-weight: 600;
+}
+
+.post_trials {
+    opacity: 0.8;
+    margin: 10px;
+    color: var(--empty);
+}
+
+
+.post_opacity {
+   opacity: 0.5;
+}
+
+input[type=checkbox]{
+    height: 0;
+    width: 0;
+    visibility: hidden;
+  }
+  
+label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 50px;
+    height: 20px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+    margin: 5px 10px;
+  }
+  
+label:after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+  }
+  
+input:checked + label {
+    background: var(--yello);
+  }
+  
+input:checked + label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+  }
+  
+label:active:after {
+    width: 50px;
+  }
+  @media (max-width: 520px) {
+    .result_page {
+        grid-template-columns: 4fr;
+        grid-template-rows: 70px 1fr;
+    }
+    .container{
+        margin-bottom: 100px; 
+    }
+  }
+  @media (max-width: 412px) {
+    .content{
+        margin: 10px 5px;
+    }
+    .post_title{
+        width: 250px;
+        margin: 5px;
+        padding: 3px 0;
+    }
+    .post_rating { 
+        margin: 5px;
+    }   
+    .post_trials {
+        margin: 5px;
+    }
+  }
+
+  
+@media (max-width: 360px) {
+    .head{
+        margin: 10px 25px;
+        padding: 0;
+    }
+    .title{
+        font-size: 24px;
+    }
+    .content{
+        margin: 0 5px;
+    }
+    .post_item {
+        font-size: 18px;
+        margin: 0 5px;
+    }
+    .post_title {
+        width: 200px;  
+        line-height: 18px;
+    }
+}
