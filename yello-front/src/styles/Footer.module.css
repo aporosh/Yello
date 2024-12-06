@@ -1,0 +1,128 @@
+.footer {
+    padding: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+    background-image: var(--bg-footer);
+    border-color: transparent;
+    border-style: solid;
+    height: 90px;
+
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.logo {
+    grid-column: 1;
+    color: var(--yello);
+    width: 61px;
+    font-size: clamp(20px, 1.005rem + 1.09vw, 30px);
+    font-weight: 700;
+    margin: 10px;
+}
+
+.rights {
+    grid-column: 2 / 3;
+    color: var(--text-white);
+    opacity: 0.6;
+    font-size: clamp(10px, 0.503rem + 0.54vw, 15px);
+    line-height: 18px;
+    margin: 20px;
+    justify-self: center;
+}
+
+.poster_image {
+    flex-grow: 1;
+    height: clamp(5.625rem, 3.906rem + 8.59vw, 12.5rem);
+    grid-column: 4;
+}
+
+.poster_image img {
+    position: absolute;
+    bottom: -2%;
+    right: 1%;
+    max-width: clamp(5rem, 1.563rem + 17.19vw, 18.75rem);
+}
+
+.test{
+    width: 20px;
+    height: 30px;
+    z-index: 2;
+    background-image: url(../images/arrow-up-30.png);
+    position: absolute;
+    right: 25%;
+    bottom: 28%;
+}
+
+.test:hover{
+    background-image: url(../images/arrow-up-30-yello.png);
+}
+
+
+@media (max-width: 960px) {
+    .footer {
+        height: 80px;
+        padding: 13px;
+    }
+}
+
+@media (height < 700px) {
+    .poster_image img {
+        max-width: 130px;
+
+    }
+}
+@media (max-width: 520px) {
+    .rights {
+        margin: 15px;
+    }
+    .poster_image img{
+        height: 110px;
+    }
+}
+@media (max-width: 480px) {
+    .footer {
+        height: 60px;
+        padding: 5px;      
+        grid-template-columns: 100px 140px 80px ;
+        gap: 20px;
+    }
+    .rights {
+        margin: 14px;
+    }
+}
+
+@media (max-width: 360px) {
+    .footer {
+        height: 50px;
+        padding: 5px;      
+        grid-template-columns: 50px 140px 80px ;
+        gap: 5px;
+    }
+    .logo {
+        width: 40px;
+        font-size: 20px;
+        font-weight: 600;
+        margin: 5px;
+    }
+    .rights {
+        font-size: 10px;
+        line-height: 15px;
+        margin: 10px 0 0 40px;
+    }
+    .poster_image img {
+        max-width: 160px;
+        bottom: -2%;
+        right: 0%;
+    }
+    .test{
+        height: 20px;
+        right: 30%;
+        bottom: 30%;
+        opacity: 0.8;
+    }
+    
+}

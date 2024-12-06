@@ -1,0 +1,7 @@
+curl 'http://localhost:4004/challenge/1' -v
+curl 'http://localhost:4004/challenge/1/challengers' -v
+curl -X POST http://localhost:4004/challenge/1/trials -v
+curl -d '{"winner":"123qwe12234", "loser":"234324fdfgf"}' -H "Content-Type: application/json" -X PATCH http://localhost:4004/challenge/1/trials/12 -v
+curl -d '{"title":"the title", "description":"the description"}' -H "Content-Type: application/json" -X POST http://localhost:4004/challenge -v
+curl -d '{"title":"the title", "link": "https://the.link","description":"the description"}' -H "Content-Type: application/json" -X POST http://localhost:4004/challenge/1/challengers -v
+curl -d '{"active":false, "resolution": "so shall it be"}' -H "Content-Type: application/json" -X PATCH http://localhost:4004/challenge/1/challengers/a6221ee3-5ca8-4fd1-b536-511c069ee439 -v

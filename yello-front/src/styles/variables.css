@@ -1,0 +1,14 @@
+:root {
+    --yello: #97ff29;
+    --text-white: #f6f6f7;
+    --text-dark: #063852;
+    --empty: orange;
+
+    --bg-page: #011a27;
+    --bg-footer: linear-gradient(225deg, rgba(6, 56, 82, 1) 15%, rgba(9, 42, 59, 1) 72%);
+    --bg-post: linear-gradient(152deg, rgba(130, 227, 32, 1) 16%, rgba(191, 255, 127, 1) 84%);
+    --bg-button: #7f29ff;
+    --btn-hover: #6c3eb8;
+
+    --notactive:  rgb(215, 215, 215);
+}
