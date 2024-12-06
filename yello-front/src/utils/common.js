@@ -33,5 +33,6 @@ export function getChallIdFromUrl(url){
   export function getPage() {
     const page = window.location.pathname.split('/')
     if (page.includes('results')) return 'results';
+    else if (page.includes('challengers')) return 'challengers';
     else return page[1]
 }

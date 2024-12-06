@@ -1,0 +1,62 @@
+.admin_page {
+    background-color: var(--bg-page);
+    display: flex;
+    flex-direction: column;
+    min-height: 91vh;
+    overflow: scroll;
+}
+
+.container {
+    margin: 0 20px;
+    flex-grow: 1;
+    margin-bottom: 40px;
+}
+
+.market {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.market_title {
+    color: var(--yello);
+    font-family: 'Raleway', Arial, sans-serif;
+    font-weight: 700;
+    font-size: clamp(60px, 0.643rem + 8.57vw, 120px);
+    line-height: 1;
+    margin: 0 40px 0 20px;
+}
+
+.head {}
+
+.title {
+
+
+    color: var(--btn-hover);
+    font-size: 40px;
+    font-size: clamp(24px, 1.25rem + 1.25vw, 40px);
+    font-weight: 700;
+
+}
+
+.btn_create {
+    display: flex;
+    justify-content: space-between;
+    color: #000;
+    height: 30px;
+    padding: 4px;
+    font-size: 14px;
+    font-family: 'DrukWide', Arial, sans-serif;
+    line-height: 1.55;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 5px;
+    width: 400px;
+    background-color: #ffc20d;
+    border-color: transparent;
+    border-style: solid;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+.btn_create:hover{
+    background-color: orange;
+}

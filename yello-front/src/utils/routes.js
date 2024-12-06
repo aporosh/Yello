@@ -3,4 +3,5 @@ export const ROUTES = {
     ADMIN: "/admin",
     CHALLENGE: "/challenge/:id",
     RESULTS: "/challenge/:id/results",
+    CHALLENGERS: "/challenge/:id/challengers",
 };
